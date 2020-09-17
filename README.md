@@ -35,6 +35,7 @@ I've documented the steps here
 
 - Following is how it looks like inside my local /usr/local/bin
 
+```
 lrwxrwxrwx  1 root root   88 Sep XX XX:57 containerd -> /home/nanik/project/gopath/src/github.com/docker/docker/bundles/binary-daemon/containerd
 lrwxrwxrwx  1 root root   93 Sep XX XX:58 containerd-shim -> /home/nanik/project/gopath/src/github.com/docker/docker/bundles/binary-daemon/containerd-shim
 lrwxrwxrwx  1 root root  101 Sep XX XX:58 containerd-shim-runc-v2 -> /home/nanik/project/gopath/src/github.com/docker/docker/bundles/binary-daemon/containerd-shim-runc-v2
@@ -48,13 +49,15 @@ lrwxrwxrwx  1 root root   99 Sep XX XX:45 kube-controller-manager -> /home/nanik
 lrwxrwxrwx  1 root root   83 Sep XX XX:06 kubectl -> /home/nanik/project/gopath/src/github.com/kubernetes/kubernetes/cmd/kubectl/kubectl
 lrwxrwxrwx  1 root root  103 Sep XX XX:50 kubelet -> /home/nanik/project/gopath/src/github.com/kubernetes/kubernetes/./_output/local/bin/linux/amd64/kubelet
 lrwxrwxrwx  1 root root   82 Sep XX XX:57 runc -> /home/nanik/project/gopath/src/github.com/docker/docker/bundles/binary-daemon/runc
+```
 
 - Create docker group and add current user to the group
-	* sudo groupadd docker
-	* sudo usermod -aG docker nanik 
-
+	```
+	sudo groupadd docker
+	sudo usermod -aG docker nanik 
+	```
 - Copy the following config.toml to /etc/containerd for containerd 
-
+	```
 	subreaper = true
 	oom_score = -999
 
@@ -67,13 +70,16 @@ lrwxrwxrwx  1 root root   82 Sep XX XX:57 runc -> /home/nanik/project/gopath/src
 	[plugins.linux]
 		runtime = "runc"
 		shim_debug = true
-
+	```
 - All the .service files will need to be copied to /etc/systemd/system and given the proper permission using the following command
 
-	* sudo chmod 664 /etc/systemd/system/<service_file_name>.service
+	```
+	sudo chmod 664 /etc/systemd/system/<service_file_name>.service
+	```
 
 - Copy the following docker.service
 
+	```
 	[Unit]
 	Description=Docker Application Container Engine
 	Documentation=https://docs.docker.com
@@ -121,9 +127,11 @@ lrwxrwxrwx  1 root root   82 Sep XX XX:57 runc -> /home/nanik/project/gopath/src
 
 	[Install]
 	WantedBy=multi-user.target
+	```
 
 - Copy the following containerd.service
 
+	```
 	# Copyright The containerd Authors.
 	#
 	# Licensed under the Apache License, Version 2.0 (the "License");
@@ -164,9 +172,11 @@ lrwxrwxrwx  1 root root   82 Sep XX XX:57 runc -> /home/nanik/project/gopath/src
 
 	[Install]
 	WantedBy=multi-user.target
+	```
 
 - Copy the following kubelet.service
 
+	```
 	[Unit]
 	Description=Kubernetes Kubelet Server
 	Documentation=https://github.com/GoogleCloudPlatform/kubernetes
@@ -183,34 +193,46 @@ lrwxrwxrwx  1 root root   82 Sep XX XX:57 runc -> /home/nanik/project/gopath/src
 
 	[Install]
 	WantedBy=multi-user.target
-
+	```
 
 - Enable, run and check containerd.service
 
+	```
 	sudo systemctl enable containerd.service 
 	sudo systemctl start containerd.service 
 	sudo systemctl status containerd.service 
+	```
 
 - Enable, run and check docker.service
 
+	```
 	sudo systemctl enable docker.service 
 	sudo systemctl start docker.service 
 	sudo systemctl status docker.service 
+	```
 
 - Enable, run and check kubelet.service
 
+	```
 	sudo systemctl enable kubelet.service 
 	sudo systemctl start kubelet.service 
 	sudo systemctl status kubelet.service 
+	```
 
 - Pre-download all images required for Kubernetes using the following 
 
-	* kubeadm config images pull --> pre-download the images
-
+	```
+	kubeadm config images pull
+	```
+	
 - Use the kubeadm to init and run Kubernetes
 
-	* sudo kubeadm init --ignore-preflight-errors=SystemVerification,KubeletVersion
+	```
+	sudo kubeadm init --ignore-preflight-errors=SystemVerification,KubeletVersion
+	```
 
 - Execute the following command to allow pods to run inside the master node
 
-	* kubectl taint nodes --all node-role.kubernetes.io/master-
+	```
+	kubectl taint nodes --all node-role.kubernetes.io/master-
+	```
