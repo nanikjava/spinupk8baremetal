@@ -6,17 +6,23 @@ I've documented the steps here
 
 
 - Switch off swap
-	* sudo echo "vm.swappiness=0" | sudo tee --append /etc/sysctl.conf
+	```
+	sudo echo "vm.swappiness=0" | sudo tee --append /etc/sysctl.conf
+	```
 
 - Compile docker, runc, containerd and kubernetes from source code. Following are the github page.
+
+	```
 	* github.com/containerd/containerd
 	* github.com/docker/cli
 	* github.com/docker/docker
 	* github.com/opencontainers/runc
 	* github.com/kubernetes/kubernetes
+	```
 
-- Symlink the following into /usr/local/bin
-
+- Symlink the following files into /usr/local/bin
+	
+	```
 	* containerd
 	* containerd-shim
 	* containerd-shim-runc-v2
@@ -31,24 +37,24 @@ I've documented the steps here
 	* kubectl
 	* kubelet
 	* runc
-
+	```
 
 - Following is how it looks like inside my local /usr/local/bin
 
 ```
-lrwxrwxrwx  1 root root   88 Sep XX XX:57 containerd -> /home/nanik/project/gopath/src/github.com/docker/docker/bundles/binary-daemon/containerd
-lrwxrwxrwx  1 root root   93 Sep XX XX:58 containerd-shim -> /home/nanik/project/gopath/src/github.com/docker/docker/bundles/binary-daemon/containerd-shim
-lrwxrwxrwx  1 root root  101 Sep XX XX:58 containerd-shim-runc-v2 -> /home/nanik/project/gopath/src/github.com/docker/docker/bundles/binary-daemon/containerd-shim-runc-v2
-lrwxrwxrwx  1 root root   81 Sep XX XX:58 ctr -> /home/nanik/project/gopath/src/github.com/docker/docker/bundles/binary-daemon/ctr
-lrwxrwxrwx  1 root root   77 Sep XX XX:49 docker -> /home/nanik/project/gopath/src/github.com/docker/cli/build/docker-linux-amd64
-lrwxrwxrwx  1 root root   89 Sep XX XX:58 dockerd -> /home/nanik/project/gopath/src/github.com/docker/docker/bundles/binary-daemon/dockerd-dev
-lrwxrwxrwx  1 root root   89 Sep XX XX:07 docker-init -> /home/nanik/project/gopath/src/github.com/docker/docker/bundles/binary-daemon/docker-init
-lrwxrwxrwx  1 root root   83 Sep XX XX:05 kubeadm -> /home/nanik/project/gopath/src/github.com/kubernetes/kubernetes/cmd/kubeadm/kubeadm
-lrwxrwxrwx  1 root root   90 Sep XX XX:44 kube-apiserver -> /home/nanik/project/gopath/src/github.com/kubernetes/kubernetes/_output/bin/kube-apiserver
-lrwxrwxrwx  1 root root   99 Sep XX XX:45 kube-controller-manager -> /home/nanik/project/gopath/src/github.com/kubernetes/kubernetes/_output/bin/kube-controller-manager
-lrwxrwxrwx  1 root root   83 Sep XX XX:06 kubectl -> /home/nanik/project/gopath/src/github.com/kubernetes/kubernetes/cmd/kubectl/kubectl
-lrwxrwxrwx  1 root root  103 Sep XX XX:50 kubelet -> /home/nanik/project/gopath/src/github.com/kubernetes/kubernetes/./_output/local/bin/linux/amd64/kubelet
-lrwxrwxrwx  1 root root   82 Sep XX XX:57 runc -> /home/nanik/project/gopath/src/github.com/docker/docker/bundles/binary-daemon/runc
+root root   88 Sep XX XX:57 containerd -> /home/nanik/project/gopath/src/github.com/docker/docker/bundles/binary-daemon/containerd
+root root   93 Sep XX XX:58 containerd-shim -> /home/nanik/project/gopath/src/github.com/docker/docker/bundles/binary-daemon/containerd-shim
+root root  101 Sep XX XX:58 containerd-shim-runc-v2 -> /home/nanik/project/gopath/src/github.com/docker/docker/bundles/binary-daemon/containerd-shim-runc-v2
+root root   81 Sep XX XX:58 ctr -> /home/nanik/project/gopath/src/github.com/docker/docker/bundles/binary-daemon/ctr
+root root   77 Sep XX XX:49 docker -> /home/nanik/project/gopath/src/github.com/docker/cli/build/docker-linux-amd64
+root root   89 Sep XX XX:58 dockerd -> /home/nanik/project/gopath/src/github.com/docker/docker/bundles/binary-daemon/dockerd-dev
+root root   89 Sep XX XX:07 docker-init -> /home/nanik/project/gopath/src/github.com/docker/docker/bundles/binary-daemon/docker-init
+root root   83 Sep XX XX:05 kubeadm -> /home/nanik/project/gopath/src/github.com/kubernetes/kubernetes/cmd/kubeadm/kubeadm
+root root   90 Sep XX XX:44 kube-apiserver -> /home/nanik/project/gopath/src/github.com/kubernetes/kubernetes/_output/bin/kube-apiserver
+root root   99 Sep XX XX:45 kube-controller-manager -> /home/nanik/project/gopath/src/github.com/kubernetes/kubernetes/_output/bin/kube-controller-manager
+root root   83 Sep XX XX:06 kubectl -> /home/nanik/project/gopath/src/github.com/kubernetes/kubernetes/cmd/kubectl/kubectl
+root root  103 Sep XX XX:50 kubelet -> /home/nanik/project/gopath/src/github.com/kubernetes/kubernetes/./_output/local/bin/linux/amd64/kubelet
+root root   82 Sep XX XX:57 runc -> /home/nanik/project/gopath/src/github.com/docker/docker/bundles/binary-daemon/runc
 ```
 
 - Create docker group and add current user to the group
