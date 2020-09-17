@@ -1,9 +1,11 @@
 Got an old laptop that was running Ubuntu so thought of refreshing it and do something with Kubernetes. Download PopOS and installed it on the laptop and then start working on compiling, installing and running kubernetes from scratch.
 
-Having this kind of setup will make it easier to understand the internals of all the different pieces of the full container stack technology. 
+![Laptop](laptop.jpg)
 
-I've documented the steps here 
+Having complete installation of Kubernetes + Docker will help to make it easier to learn more about the internal working of the different pieces of the full container stack technology. 
 
+
+Following are the steps that was performed:
 
 - Switch off swap
 	```
