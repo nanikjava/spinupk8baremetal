@@ -1,6 +1,6 @@
 Got an old laptop that was running Ubuntu so thought of refreshing it and do something with Kubernetes. Download PopOS and installed it on the laptop and then start working on compiling, installing and running kubernetes (along with docker,etc) from source code.
 
-![Laptop](l.jpg)
+![Laptop](laptop.jpg)
 
 Having complete installation of Kubernetes + Docker will help to make it easier to learn more about the internal working of the different pieces of the full container stack technology. 
 
