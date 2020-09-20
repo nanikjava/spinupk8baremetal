@@ -1,6 +1,6 @@
 Got an old laptop that was running Ubuntu so thought of refreshing it and do something with Kubernetes. Download PopOS and installed it on the laptop and then start working on compiling, installing and running kubernetes from scratch.
 
-![Laptop](laptop.jpg)
+![Laptop](l.jpg)
 
 Having complete installation of Kubernetes + Docker will help to make it easier to learn more about the internal working of the different pieces of the full container stack technology. 
 
@@ -10,6 +10,13 @@ Following are the steps that was performed:
 - Switch off swap
 	```
 	sudo echo "vm.swappiness=0" | sudo tee --append /etc/sysctl.conf
+	```
+
+	or
+
+
+	```
+	sudo swapoff -a
 	```
 
 - Compile docker, runc, containerd and kubernetes from source code. Following are the github page.
@@ -239,8 +246,63 @@ root root   82 Sep XX XX:57 runc -> /home/nanik/project/gopath/src/github.com/do
 	sudo kubeadm init --ignore-preflight-errors=SystemVerification,KubeletVersion
 	```
 
+- Once kubeadm successfully ran it will print out the command on how to configure your kubectl. In my case following is the steps
+
+	```
+	Your Kubernetes control-plane has initialized successfully!
+
+	To start using your cluster, you need to run the following as a regular user:
+
+	  mkdir -p $HOME/.kube
+	  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+	  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+	Alternatively, if you are the root user, you can run:
+
+	  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+	```
+
 - Execute the following command to allow pods to run inside the master node
 
 	```
 	kubectl taint nodes --all node-role.kubernetes.io/master-
 	```
+
+
+- Follow the steps to test Kubernetes (based on the example from https://kubernetes.io/docs/tutorials/stateless-application/expose-external-ip-address/)
+
+
+	```
+	kubectl apply -f https://k8s.io/examples/service/load-balancer-example.yaml
+
+	kubectl get deployments hello-world
+ 	kubectl describe deployments hello-world
+
+	kubectl get replicasets
+	kubectl describe replicasets
+
+	kubectl expose deployment hello-world --type=LoadBalancer --name=my-service
+	```
+
+  Patch my-service deployment with the following
+
+	```
+	kubectl patch svc my-service  -p '{"spec": {"type": "LoadBalancer", "externalIPs":["192.168.1.17"]}}'
+	```
+  Replace 192.168.1.17 with your host IP address. This will expose the hello-world application from the network.
+
+  Use the following command to get the correct port number
+
+	```
+	kubectl get services my-service
+  	````
+
+  In my case I got the following output
+
+	````
+	NAME         TYPE           CLUSTER-IP     EXTERNAL-IP    PORT(S)          AGE
+	my-service   LoadBalancer   10.104.67.46   192.168.1.17   8080:30256/TCP   93s
+	````
+
+  I'm able to access the application from another laptop using the address http://192.168.1.17:30256/
